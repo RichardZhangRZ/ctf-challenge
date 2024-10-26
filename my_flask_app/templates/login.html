@@ -3,27 +3,33 @@
 <head>
     <meta charset="UTF-8">
     <title>Login</title>
+    <link rel="stylesheet" href="/static/styles.css">
 </head>
 <body>
+  <div class="container">
+    <h1 class="title">Crab Leg Calculator</h1>
+    <img src="/static/crab leg.jpg" alt="Crab Leg" style="width: 80%" />
     <h2>Login</h2>
     {% with messages = get_flashed_messages(with_categories=true) %}
       {% if messages %}
-        <ul>
+        <ul class="messages">
           {% for category, message in messages %}
             <li class="{{ category }}">{{ message }}</li>
           {% endfor %}
         </ul>
       {% endif %}
-    {% endwith %}</h2>
+    {% endwith %}
     <form method="post">
-        <label for="username">Username:</label>
-        <input type="text" name="username" required>
-        <br>
-        <label for="password">Password:</label>
-        <input type="password" name="password" required>
-        <br>
+        <label for="username">Username</label>
+        <input type="text" id="username" name="username" required>
+
+        <label for="password">Password</label>
+        <input type="password" id="password" name="password" required>
+
         <button type="submit">Login</button>
     </form>
-    <h2>We would like to thank <b>cricketmaster2003</b> for being our first user!</h2>
+    <p class="thank-you">We would like to thank <b>cricketmaster2003</b> for being our first user!</p>
+    <a href="https://github.com/RichardZhangRZ/ctf-challenge/tree/main/my_flask_app" target="_blank">Source Code</a>
+  </div>
 </body>
 </html>

@@ -11,7 +11,7 @@ db_config = {
     "host": os.getenv("DB_HOST", "localhost"),
     "user": os.getenv("DB_USER", "root"),  # Replace with your MySQL username
     "password": os.getenv("DB_PASSWORD", "password"),  # Replace with your MySQL password
-    "database": os.getenv("DB_NAME", "mydb"),
+    "database": os.getenv("DB_NAME", "prabhav"),
 }
 
 # Helper function to get a database connection
@@ -52,23 +52,24 @@ def login():
     if request.method == "POST":
         username = request.form["username"]
         password = request.form["password"]
+        sanitized_username = username.replace("'", "''")
+        sanitized_password = password.replace("'", "''")
 
         # Query the user from the database
         conn = get_db_connection()
         cursor = conn.cursor(dictionary=True, buffered=True)
         cursor.execute(
-            f"SELECT * FROM users WHERE username = '{username}' AND password = '{password}'"
+            f"SELECT * FROM users WHERE username = '{sanitized_username}' AND password = '{sanitized_password}'"
         )
         user = cursor.fetchone()
         cursor.close()
         conn.close()
 
         if user:
-            session["username"] = username
+            session["username"] = sanitized_username
             m = hashlib.sha256()
-            m.update(username.encode("utf-8"))
+            m.update(sanitized_username.encode("utf-8"))
             session["token"] = m.hexdigest()
-            flash("You have successfully logged in!", "success")
             return redirect(url_for("home"))
         else:
             flash("Invalid credentials. Please try again.", "error")
