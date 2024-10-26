@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Home</title>
+</head>
+<body>
+    <h2>Hi {{ username }}! Enter a math expression to evaluate:</h2>
+
+
+    <form action="{{ url_for('home') }}" method="post">
+        <label for="user_input">Your Input:</label>
+        <input type="text" name="user_input" id="user_input" required>
+        <button type="submit">Submit</button>
+    </form>
+    {% if response_message %}
+        <p><strong>{{ response_message }}</strong></p>
+    {% endif %}
+    
+    {% if evaluated_expression %}
+        <h3>Result:</h3>
+        <p><strong>{{ evaluated_expression }}</strong></p>
+    {% endif %}
+    <a href="{{ url_for('logout') }}">Logout</a>
+</body>
+</html>
