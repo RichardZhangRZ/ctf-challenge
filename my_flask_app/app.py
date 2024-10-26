@@ -8,10 +8,10 @@ app.secret_key = os.getenv("SECRET_KEY", "secret")
 
 # Configure MySQL connection
 db_config = {
-    "host": "localhost",
-    "user": "prabhav",  # Replace with your MySQL username
-    "password": "password",  # Replace with your MySQL password
-    "database": "prabhav",
+    "host": os.getenv("DB_HOST", "localhost"),
+    "user": os.getenv("DB_USER", "root"),  # Replace with your MySQL username
+    "password": os.getenv("DB_PASSWORD", "password"),  # Replace with your MySQL password
+    "database": os.getenv("DB_NAME", "mydb"),
 }
 
 # Helper function to get a database connection
