@@ -25,7 +25,7 @@ def home():
         return redirect(url_for("login"))
     
     # Check that token is valid
-    if session["token"] != hashlib.sha256(session["username"].encode("utf-8")).hexdigest():
+    if session["token"] != hashlib.sha256(app.secret_key.encode("utf-8") + session["username"].encode("utf-8")).hexdigest():
         return redirect(url_for("login"))
     
     # Initialize the evaluated expression as None (no input initially)
@@ -75,7 +75,7 @@ def login():
         if user:
             session["username"] = username
             m = hashlib.sha256()
-            m.update(username.encode("utf-8"))
+            m.update(app.secret_key.encode("utf-8") + username.encode("utf-8"))
             session["token"] = m.hexdigest()
             return redirect(url_for("home"))
         else:
