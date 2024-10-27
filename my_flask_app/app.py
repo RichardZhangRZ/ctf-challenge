@@ -52,23 +52,30 @@ def login():
     if request.method == "POST":
         username = request.form["username"]
         password = request.form["password"]
-        sanitized_username = username.replace("'", "''")
-        sanitized_password = password.replace("'", "''")
 
         # Query the user from the database
         conn = get_db_connection()
         cursor = conn.cursor(dictionary=True, buffered=True)
-        cursor.execute(
-            f"SELECT * FROM users WHERE username = '{sanitized_username}' AND password = '{sanitized_password}'"
-        )
-        user = cursor.fetchone()
+
+        results = []
+        for result in cursor.execute(
+            f"SELECT * FROM users WHERE username = '{username}' AND password = '{password}'"
+        , multi=True):
+              try:
+                results.append(result.fetchall())
+              except Exception as e:
+                continue
+        user = results[0] if results else False
+        
+        conn.commit()
         cursor.close()
+        
         conn.close()
 
         if user:
-            session["username"] = sanitized_username
+            session["username"] = username
             m = hashlib.sha256()
-            m.update(sanitized_username.encode("utf-8"))
+            m.update(username.encode("utf-8"))
             session["token"] = m.hexdigest()
             return redirect(url_for("home"))
         else:
